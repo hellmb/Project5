@@ -164,26 +164,143 @@ int main(int argc, char* argv[]){
         }
     }
 
-    /*if (atoi(argv[3]) == 4){
-        // Gauss-Seidel iterative method
+    if (atoi(argv[3]) == 4){
+        // Jacobi iterative method for explicit scheme
 
-        // defining two-dimensional matrix
-        mat V = zeros<mat>(n, n);
-        mat V_temp = zeros<mat>(n, n);
+        mat b = zeros<mat>(n, n);
+        mat b_temp = zeros<mat>(n, n);
+        vec x = zeros<vec>(n);
 
-        // boundary conditions
-        V(0,0) = 0.0;     V(0, n-1) = 1.0;
-        V(n-1, 0) = 0.0;  V(n-1, n-1) = 1.0;
+        for (int i = 0; i < n; i++){
+            x(i) = delta_x * delta_x * i;
+        }
 
-        // start iteration algorithm
-        iterations = 0;
-        while( (iterations <= timesteps) && (diff < 0.0001) )
+        // boundary
+        for (int i = 0; i < n; i++){
+            for (int j = 0; j < n; j++){
+                if (j == n-1){
+                    b(i, j) = 100.0 * sin( (M_PI * x(i))/x(n-1) );
+                }
+                if (j == 0){
+                    b(i, j) = -100.0 * sin( (M_PI * x(i))/x(n-1) );
+                }
+            }
+        }
+         // solve Jacobi iterative method over timesteps
+
+        // loop over time
+        for (int t = 1; t < timesteps; t++){
+
+            int iterations = 0;
+            int max_iterations = 100;
+            double tolerance = 0.00001;
+            double difference = tolerance + 1;
+
+            while (iterations <= max_iterations && difference > tolerance){
+
+                b_temp = b;
+                difference = 0;
+                for (int i = 1; i < n-1; i++){
+                    for (int j = 1; j < n-1; j++){
+
+                        b(i, j) = 0.25 * ( b_temp(i, j+1) + b_temp(i, j-1) + b_temp(i+1, j) + b_temp(i-1, j) );
+                        // implicit Euler scheme
+                        //b(i, j) = (1.0 + 4.0 * alpha) * b_temp(i, j) - alpha * (b_temp(i+1, j) + b_temp(i-1, j) + b_temp(i, j+1) + b_temp(i, j-1));
+                        difference += fabs( sum(b(i, j) - b_temp(i, j)) );
+                    }
+                }
+                difference /= n * n;
+                iterations += 1;
+                //cout << "Difference: " << difference << endl;
+            }
+        }
+        b.print();
 
 
 
 
+//        // defining two-dimensional matrix
+//        mat A = zeros<mat>(n, n);
+//        mat D = zeros<mat>(n, n);
+//        mat L = zeros<mat>(n, n);
+//        mat u = zeros<mat>(n, n);
 
-    }*/
+//        vec temp(n);
+//        for (int i = 1; i < n-1; i++){
+//            temp(i) = -1.0;
+//        }
+
+//        // fill matrices
+//        for (int i = 0; i < n; i++){
+//            for (int j = 0; j < n; j++){
+
+//                if (i == 0){
+//                    u(i, j) = temp(j);
+//                }
+//                if (j == n-1){
+//                    u(i, j) = temp(i);
+//                }
+
+//                if (j == 0){
+//                    L(i, j) = temp(i);
+//                }
+//                if (i == n-1){
+//                    L(i, j) = temp(j);
+//                }
+
+//                if (i == j){
+//                    D(i, j) = 4.0;
+//                }
+//            }
+//        }
+
+//        A = D + L + u;
+
+//        //A.print("A: ");
+
+//        vec b(n);
+//        for (int i = 0; i < n; i++){
+//            // this is wrong
+//            b(i) = delta_x * delta_x;
+//        }
+
+//        //b.print("b: ");
+
+//        vec sol_new = zeros<vec>(n);
+//        // initial solution guessed at 0
+//        vec sol_old = randu<vec>(n);
+
+
+//        // create a loop over time here?
+//        //for (int t = 1; t < timesteps; t++){
+
+//        // start iteration algorithm
+//        int iterations = 0;
+//        int max_iterations = 1000;
+//        double tolerance = 0.00001;
+//        double difference = tolerance + 1.0;
+
+//            while ( iterations <= max_iterations && difference > tolerance ) {
+
+//                difference = 0;
+
+//                sol_new = 0.25 * (b - (L+u) * sol_old);
+//                iterations += 1;
+//                difference += fabs(sum(sol_new - sol_old)/n);
+
+//                sol_old = sol_new;
+//                //cout << difference << endl;
+
+//            }
+//            //difference /= pow(n, 2.0);
+//            cout << difference << endl;
+//        //}
+
+//        vec solution = zeros<vec>(n);
+//        solution = sol_old;
+
+//        solution.print("Solution: ");
+   }
 
 
     return 0;
