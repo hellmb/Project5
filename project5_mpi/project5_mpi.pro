@@ -7,4 +7,3 @@ SOURCES += main.cpp
 
 INCLUDEPATH += /usr/local/include
 LIBS += -L/usr/local/lib -lblas -llapack -larmadillo
-
