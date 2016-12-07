@@ -58,6 +58,28 @@ void explicitForwardEuler(int n, int timesteps, vec &V_old, vec &V_new, double a
     }
 }
 
+void explicitForwardEulerUnstable(int n, int timesteps, vec &V_old, vec &V_new, string timestepsString) {
+
+    double alpha_unstable = 1.0;
+
+    for (int t = 1; t <= timesteps; t++){
+        for (int i = 1; i < n-1; i++){
+            V_new(i) = alpha_unstable * V_old(i-1) + (1.0 - 2.0 * alpha_unstable) * V_old(i) + alpha_unstable * V_old(i+1);
+        }
+        V_old = V_new;
+    }
+    // write file for different timsteps
+    string explicit_euler ("../files_project5/explicit_euler_unstable");
+    explicit_euler += timestepsString;
+    explicit_euler += ".txt";
+
+    ofstream myfile4;
+    myfile4.open(explicit_euler);
+
+    for (int i = 0; i < n; i++){
+        myfile4 << V_new(i) << endl;
+    }
+}
 
 int main(int argc, char* argv[]){
 
@@ -163,6 +185,10 @@ int main(int argc, char* argv[]){
         for (int i = 0; i < n; i++){
             myfile3 << V_CN(i) << endl;
         }
+    }
+
+    if (atoi(argv[3]) == 4){
+        explicitForwardEulerUnstable(n, timesteps, V_old, V_new, argv[2]);
     }
 
 

@@ -17,6 +17,8 @@ imp_CN100 = loadtxt('implicit_CN100.txt')
 imp_CN1000 = loadtxt('implicit_CN1000.txt')
 imp_CN10000 = loadtxt('implicit_CN10000.txt')
 
+exp_euler10_unst = loadtxt('explicit_euler_unstable10.txt')
+exp_euler100_unst = loadtxt('explicit_euler_unstable100.txt')
 
 n = 100
 time = linspace(0, 1, n)
@@ -26,7 +28,7 @@ x = linspace(0, 1, n)
 analytical_solution = x + (2.0/pi) * sum( (-1.0**n/n) * sin(n * pi * x) * exp( -(n * pi)**2 * time) )
 
 
-explicit_euler = True
+explicit_euler = False
 if explicit_euler:
 
 	# plot all curves in same figure
@@ -40,7 +42,26 @@ if explicit_euler:
 	legend(loc='best', fontsize=15)
 	show()
 
-implicit_euler = True
+explicit_euler_unstable = True
+if explicit_euler_unstable:
+
+	plot(time, exp_euler10_unst, label=r'Explicit Euler')
+	plot(time, analytical_solution, label=r'Analytical solution')
+	title(r'Explicit Euler for unstable $\alpha$ at $10$ timesteps against analytical solution', fontsize=20)
+	xlabel(r'$Time$', fontsize=18)
+	ylabel(r'$u(x, t)$', fontsize=18)
+	legend(loc='best', fontsize=15)
+	show()
+
+	plot(time, exp_euler100_unst, label=r'Explicit Euler')
+	plot(time, analytical_solution, label=r'Analytical solution')
+	title(r'Explicit Euler for unstable $\alpha$ at $100$ timesteps against analytical solution', fontsize=20)
+	xlabel(r'$Time$', fontsize=18)
+	ylabel(r'$u(x, t)$', fontsize=18)
+	legend(loc='best', fontsize=15)
+	show()
+
+implicit_euler = False
 if implicit_euler:
 
 	# plot all curves in same figure
@@ -54,7 +75,7 @@ if implicit_euler:
 	legend(loc='best', fontsize=15)
 	show()
 
-implicit_CN = True
+implicit_CN = False
 if implicit_CN:
 
 	# plot all curves in same figure
@@ -118,43 +139,35 @@ if plot_analytical_solution:
 	value_cn1 = imp_CN10000[10]
 	value_as1 = analytical_solution[10]
 
-	value_eeuler2 = exp_euler10000[50]
-	value_ieuler2 = imp_euler10000[50]
-	value_cn2 = imp_CN10000[50]
-	value_as2 = analytical_solution[50]
+	value_eeuler2 = exp_euler10000[25]
+	value_ieuler2 = imp_euler10000[25]
+	value_cn2 = imp_CN10000[25]
+	value_as2 = analytical_solution[25]
 
-	value_eeuler3 = exp_euler10000[90]
-	value_ieuler3 = imp_euler10000[90]
-	value_cn3 = imp_CN10000[90]
-	value_as3 = analytical_solution[90]
+	value_eeuler3 = exp_euler10000[50]
+	value_ieuler3 = imp_euler10000[50]
+	value_cn3 = imp_CN10000[50]
+	value_as3 = analytical_solution[50]
+
+	value_eeuler4 = exp_euler10000[75]
+	value_ieuler4 = imp_euler10000[75]
+	value_cn4 = imp_CN10000[75]
+	value_as4 = analytical_solution[75]
+
+	value_eeuler5 = exp_euler10000[90]
+	value_ieuler5 = imp_euler10000[90]
+	value_cn5 = imp_CN10000[90]
+	value_as5 = analytical_solution[90]
 
 	print 'Explicit euler1: %g\nImplicit euler1: %g\nImplicit CN1: %g\nAnalytical solution1: %g' % (value_eeuler1, value_ieuler1, value_cn1, value_as1)
 
-	'''
-	Explicit euler1: 0.0997185
-	Implicit euler1: 0.102649
-	Implicit CN1: 0.10052
-	Analytical solution1: 0.10101
-	'''
-
 	print 'Explicit euler2: %g\nImplicit euler2: %g\nImplicit CN2: %g\nAnalytical solution2: %g' % (value_eeuler2, value_ieuler2, value_cn2, value_as2)
-
-	'''
-	Explicit euler value: 0.500912
-	Implicit euler value: 0.502422
-	Implicit CN value: 0.501323
-	Analytical solution value: 0.505051
-	'''
 
 	print 'Explicit euler3: %g\nImplicit euler3: %g\nImplicit CN3: %g\nAnalytical solution3: %g' % (value_eeuler3, value_ieuler3, value_cn3, value_as3)
 
-	'''
-	Explicit euler3: 0.907925
-	Implicit euler3: 0.908191
-	Implicit CN3: 0.907997
-	Analytical solution3: 0.909091
-	'''
+	print 'Explicit euler4: %g\nImplicit euler4: %g\nImplicit CN4: %g\nAnalytical solution4: %g' % (value_eeuler4, value_ieuler4, value_cn4, value_as4)
 
+	print 'Explicit euler5: %g\nImplicit euler5: %g\nImplicit CN5: %g\nAnalytical solution5: %g' % (value_eeuler5, value_ieuler5, value_cn5, value_as5)
 
 
 
