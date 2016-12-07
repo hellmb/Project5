@@ -61,35 +61,32 @@ int JacobiSolver(int n, double tolerance, double alpha, mat &A, mat &A_init){
     return max_iterations;
 }
 
-
-
-int GaussSeidelSolver(int n, double tolerance, double alpha, mat &A_jacobi, mat &A_init, mat &A){
+int GaussSeidelSolver(int n, double tolerance, double alpha, mat &A, mat &A_init){
 
     int max_iterations = 100000;
     double D = 1 / (1 + 4 * alpha);   // matrix diagonal
     int i, j;
 
     mat A_old(n, n);
-    mat GS_prev(n, n);
 
 
 #pragma omp parallel for
-        // fill A_old with 1's
+        // fill A_old with alpha
         for (int i = 1; i < n-1; i++){
             for (int j = 1; j < n-1; j++){
                 A_old(i, j) = alpha;
             }
         }
 
-    // do Jacobi iterative method once for first calculation of Gauss-Seidel
-    for (int iterations = 0; iterations < max_iterations; iterations ++){
+    // Gauss-Seidel iterative solver
+    for (int iterations = 0; iterations < max_iterations; iterations ++) {  // k
 
 #pragma omp parallel for
             for (int i = 1; i < n-1; i++){
                 for (int j = 1; j < n-1; j++){
                     // implicit Euler scheme
-                    A_jacobi(i, j) = D * A_init(i, j) +
-                            D * ( alpha * ( A_old(i+1, j) + A_old(i-1, j) + A_old(i, j+1) + A_old(i, j-1) ) );
+                    A(i, j) = D * A_init(i, j) +
+                            D * ( alpha * ( A_old(i+1, j) + A(i-1, j) + A_old(i, j+1) + A(i, j-1) ) );
                 }
             }
 
@@ -99,50 +96,7 @@ int GaussSeidelSolver(int n, double tolerance, double alpha, mat &A_jacobi, mat 
 # pragma omp for
             for (int i = 0; i < n; i ++){
                 for (int j = 0; j < n; j++){
-                    sum += ( A_old(i, j) - A_jacobi(i, j) ) * ( A_old(i, j) - A_jacobi(i, j) );
-                    A_old(i, j) = A_jacobi(i, j);
-                }
-            }
-        }
-
-        // convergence
-        if (sqrt(sum) < tolerance){
-            break;
-        }
-    }
-
-#pragma omp parallel for
-    for (int i = 1; i < n-1; i++){
-        for (int j = 1; j < n-1; j++){
-            // set the previous value of of the GS solver to be the Jacobi matrix calculated above
-            GS_prev(i, j) = A_jacobi(i, j);
-        }
-    }
-
-    // Gauss-Seidel iterative method
-    for (int iterations = 0; iterations < max_iterations; iterations++){
-
-# pragma omp parallel for
-        for (int i = 1; i < n-1; i++){
-            for (int j = 1; j < n-1; j++){
-                // implicit Euler scheme
-//                A(i, j) = D * A_init(i, j) + D * GS_prev(i, j) +
-//                        D * ( alpha * ( A_old(i+1, j) + A_old(i-1, j) + A_old(i, j+1) + A_old(i, j-1) ) );
-                A(i, j) = D * A_init(i, j) + D * alpha * ( GS_prev(i-1, j) + GS_prev(i, j-1) + GS_prev(i+1, j) + GS_prev(i, j+1) ) +
-                        D * alpha * ( A_old(i+1, j) + A_old(i-1, j) + A_old(i, j+1) + A_old(i, j-1)  );
-            }
-        }
-
-        double sum;
-# pragma omp parallel default(shared) private(i, j) reduction(+:sum)
-        {
-# pragma parallel for
-            for (int i = 0; i < n; i++){
-                for (int j = 0; j < n; j++){
                     sum += ( A_old(i, j) - A(i, j) ) * ( A_old(i, j) - A(i, j) );
-                    //sum += ( A(i, j) - A_old(i, j) ) * ( A(i, j) - A_old(i, j) );
-                    //A_old(i, j) = GS_prev(i, j);
-                    //GS_prev(i, j) = A(i, j);
                     A_old(i, j) = A(i, j);
                 }
             }
@@ -158,7 +112,6 @@ int GaussSeidelSolver(int n, double tolerance, double alpha, mat &A_jacobi, mat 
 
     return max_iterations;
 }
-
 
 
 int main(int argc, char * argv[]){
@@ -222,7 +175,7 @@ int main(int argc, char * argv[]){
 
         for (int t = 1; t < timesteps; t++){
 
-            iteration_counter = GaussSeidelSolver(n, tolerance, alpha, A_jacobi, A_init, A);
+            iteration_counter = GaussSeidelSolver(n, tolerance, alpha, A, A_init);
 
             for (int i = 0; i < n; i ++){
                 for (int j = 0; j < n; j++){
@@ -231,11 +184,6 @@ int main(int argc, char * argv[]){
             }
         }
     }
-
-    //A_jacobi.print("A jacobi: ");
-
-    //A.print("A: ");
-
 
     // exact solution for comparison
     double exact_solution;
@@ -250,7 +198,14 @@ int main(int argc, char * argv[]){
     wtime = omp_get_wtime ( ) - wtime;
 
     cout << "Time used: " << wtime << endl;
-    cout << "Jacobi error is " << sum/(n*n) << " in " << iteration_counter << " iterations" << endl;
+
+    if (atoi(argv[3]) == 1){
+        cout << "Jacobi error is " << sum/(n*n) << " in " << iteration_counter << " iterations" << endl;
+    }
+
+    if (atoi(argv[3]) == 2){
+        cout << "Gauss-Seidel error is " << sum/(n*n) << " in " << iteration_counter << " iterations" << endl;
+    }
 
     return 0;
 }

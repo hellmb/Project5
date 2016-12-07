@@ -21,12 +21,12 @@ imp_CN10000 = loadtxt('implicit_CN10000.txt')
 n = 100
 time = linspace(0, 1, n)
 x = linspace(0, 1, n)
+nn = linspace(1, 100, 100)
 
 # analytical solution
 analytical_solution = x + (2.0/pi) * sum( (-1.0**n/n) * sin(n * pi * x) * exp( -(n * pi)**2 * time) )
 
-
-explicit_euler = True
+explicit_euler = False
 if explicit_euler:
 
 	# plot all curves in same figure
@@ -40,7 +40,7 @@ if explicit_euler:
 	legend(loc='best', fontsize=15)
 	show()
 
-implicit_euler = True
+implicit_euler = False
 if implicit_euler:
 
 	# plot all curves in same figure
@@ -54,7 +54,7 @@ if implicit_euler:
 	legend(loc='best', fontsize=15)
 	show()
 
-implicit_CN = True
+implicit_CN = False
 if implicit_CN:
 
 	# plot all curves in same figure
@@ -68,7 +68,7 @@ if implicit_CN:
 	legend(loc='best', fontsize=15)
 	show()
 
-plot_analytical_solution = False
+plot_analytical_solution = True
 if plot_analytical_solution:
 
 	fig = figure(figsize=(25,8), facecolor='white')
