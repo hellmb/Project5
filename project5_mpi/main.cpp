@@ -21,10 +21,11 @@ int main(int argc, char * argv[]){
     // define variables
     int n = atoi( argv[1] );
     int timesteps = atoi( argv[2] );
-    double dx = 1.0/(n*n);
+    //double dx = 1.0/(n*n);
+    double dx = 1.0 / (n - 1);
     double dt = 0.25 * dx * dx;
     double alpha = dt / ( dx * dx );
-    double tolerance = 1.0e-14;
+    double tolerance = 1.0e-8;
 
     omp_set_num_threads(4);
 
@@ -40,8 +41,8 @@ int main(int argc, char * argv[]){
     }
 
     // initializing A_init
-    for ( int i = 0; i < n*n; i++ ){
-        for ( int j = 0; j < n*n; j++ ){
+    for ( int i = 0; i < n; i++ ){
+        for ( int j = 0; j < n; j++ ){
             A_init(i, j) = sin( 2 * M_PI * dx * i ) * sin( 2 * M_PI * dx * j );
         }
     }
@@ -80,19 +81,13 @@ int main(int argc, char * argv[]){
         }
     }
 
-
-    vec x(n);
-    for ( int i = 0; i < n; i++ ){
-        x(i) = i / (double (n));
-    }
-
     // exact solution for comparison
     double exact_solution;
     double sum = 0.0;
     for ( int t = 1; t <= timesteps; t++ ){
         for ( int i = 0; i < n; i++ ){
             for ( int j = 0; j < n; j++ ){
-                exact_solution = sin( 2 * M_PI * (i) ) * sin( 2 * M_PI * x(i) ) * exp( - 4 * M_PI * M_PI * t );
+                exact_solution = sin( 2 * M_PI * dx * i ) * sin( 2 * M_PI * dx * j ) * exp( - 4 * M_PI * M_PI * dt * t );
                 sum += fabs(A(i, j) - exact_solution);
             }
         }

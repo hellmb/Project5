@@ -203,7 +203,7 @@ if plot_initial:
 	ax.set_zlabel('z', fontsize=18)
 	show()
 
-plot_solution = False
+plot_solution = True
 if plot_solution:
 
 	dim = solution_2d.shape[0]
@@ -229,6 +229,7 @@ if plot_analytical:
 
 	x = linspace(0,1, dim)
 	y = linspace(0,1, dim)
+	t = linspace(0,1, dim)
 
 	X, Y = meshgrid(x,y)
 
@@ -241,11 +242,7 @@ if plot_analytical:
 	ax.set_xlabel('x', fontsize=18)
 	ax.set_ylabel('y', fontsize=18)
 	ax.set_zlabel('z', fontsize=18)
-	ax.set_zlim([-1e-15, 1e-15])
 	show()
-
-	
-#exact_solution = sin( 2 * M_PI * dx * i ) * sin( 2 * M_PI * dx * j ) * exp( - 4 * M_PI * M_PI * dt * t )
 
 
 
