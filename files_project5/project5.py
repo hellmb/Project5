@@ -1,24 +1,31 @@
 from pylab import *
+from numpy import zeros
 from mpl_toolkits.axes_grid.inset_locator import inset_axes, zoomed_inset_axes
+from mpl_toolkits.mplot3d import Axes3D
 
 # load text-files
 exp_euler10 = loadtxt('explicit_euler10.txt')
 exp_euler100 = loadtxt('explicit_euler100.txt')
 exp_euler1000 = loadtxt('explicit_euler1000.txt')
 exp_euler10000 = loadtxt('explicit_euler10000.txt')
+exp_euler100000 = loadtxt('explicit_euler100000.txt')
 
 imp_euler10 = loadtxt('implicit_euler10.txt')
 imp_euler100 = loadtxt('implicit_euler100.txt')
 imp_euler1000 = loadtxt('implicit_euler1000.txt')
 imp_euler10000 = loadtxt('implicit_euler10000.txt')
+imp_euler100000 = loadtxt('implicit_euler100000.txt')
 
 imp_CN10 = loadtxt('implicit_CN10.txt')
 imp_CN100 = loadtxt('implicit_CN100.txt')
 imp_CN1000 = loadtxt('implicit_CN1000.txt')
 imp_CN10000 = loadtxt('implicit_CN10000.txt')
+imp_CN100000 = loadtxt('implicit_CN100000.txt')
 
 exp_euler10_unst = loadtxt('explicit_euler_unstable10.txt')
 exp_euler100_unst = loadtxt('explicit_euler_unstable100.txt')
+
+solution_2d = loadtxt('solution.txt')
 
 n = 100
 time = linspace(0, 1, n)
@@ -37,6 +44,7 @@ if explicit_euler:
 	plot(time, exp_euler100, label=r'Timestep $= 100$')
 	plot(time, exp_euler1000, label=r'Timestep $= 1000$')
 	plot(time, exp_euler10000, label=r'Timestep $= 10000$')
+	plot(time, exp_euler100000, label=r'Timestep $= 100000$')
 	title(r'Explicit Euler scheme over different timesteps', fontsize=20)
 	xlabel(r'$Time$', fontsize=18)
 	ylabel(r'$u(x, t)$', fontsize=18)
@@ -44,7 +52,7 @@ if explicit_euler:
 	show()
 
 
-explicit_euler_unstable = True
+explicit_euler_unstable = False
 if explicit_euler_unstable:
 
 	plot(time, exp_euler10_unst, label=r'Explicit Euler')
@@ -72,6 +80,7 @@ if implicit_euler:
 	plot(time, imp_euler100, label=r'Timestep $= 100$')
 	plot(time, imp_euler1000, label=r'Timestep $= 1000$')
 	plot(time, imp_euler10000, label=r'Timestep $= 10000$')
+	plot(time, imp_euler100000, label=r'Timestep $= 100000$')
 	title(r'Implicit Euler scheme over different timesteps', fontsize=20)
 	xlabel(r'$Time$', fontsize=18)
 	ylabel(r'$u(x,t)$', fontsize=18)
@@ -86,13 +95,14 @@ if implicit_CN:
 	plot(time, imp_CN100, label=r'Timestep $= 100$')
 	plot(time, imp_CN1000, label=r'Timestep $= 1000$')
 	plot(time, imp_CN10000, label=r'Timestep $= 10000$')
+	plot(time, imp_CN100000, label=r'Timestep $= 100000$')
 	title(r'Implicit Crank-Nicolson scheme over different timesteps', fontsize=20)
 	xlabel(r'$Time$', fontsize=18)
 	ylabel(r'$u(x, t)$', fontsize=18)
 	legend(loc='best', fontsize=15)
 	show()
 
-plot_analytical_solution = True
+plot_analytical_solution = False
 if plot_analytical_solution:
 
 	fig = figure(figsize=(25,8), facecolor='white')
@@ -111,11 +121,11 @@ if plot_analytical_solution:
 
 	subplot(122)
 	plot(time, analytical_solution, 'm', label=r'Analytical solution')
-	plot(time, exp_euler10000, 'r', label=r'Explicit Euler')
-	plot(time, imp_euler10000, 'b', label=r'Implicit Euler')
-	plot(time, imp_CN10000, 'g', label=r'Implicit Crank-Nicolson')
+	plot(time, exp_euler100000, 'r', label=r'Explicit Euler')
+	plot(time, imp_euler100000, 'b', label=r'Implicit Euler')
+	plot(time, imp_CN100000, 'g', label=r'Implicit Crank-Nicolson')
 
-	title(r'Compare analytical solution to all three schemes at $t_2 = 10000$', fontsize=20)
+	title(r'Compare analytical solution to all three schemes at $t_2 = 100000$', fontsize=20)
 	xlabel(r'$Time$', fontsize=18)
 	ylabel(r'$u(x, t)$', fontsize=18)
 	legend(loc='best', fontsize=15)
@@ -130,8 +140,8 @@ if plot_analytical_solution:
 	ylim([0.5,0.51])
 	xlim([0.5,0.51])
 
-	xticks([0.5, 0.509],)
-	yticks([0.5, 0.509])
+	xticks([0.5, 0.51],)
+	yticks([0.5, 0.51])
 	#tight_layout()
 
 	show()
@@ -171,6 +181,82 @@ if plot_analytical_solution:
 	print 'Explicit euler4: %g\nImplicit euler4: %g\nImplicit CN4: %g\nAnalytical solution4: %g' % (value_eeuler4, value_ieuler4, value_cn4, value_as4)
 
 	print 'Explicit euler5: %g\nImplicit euler5: %g\nImplicit CN5: %g\nAnalytical solution5: %g' % (value_eeuler5, value_ieuler5, value_cn5, value_as5)
+
+
+plot_initial = False
+if plot_initial:
+
+	dim = solution_2d.shape[0]
+
+	x = linspace(0,1, dim)
+	y = linspace(0,1, dim)
+
+	X, Y = meshgrid(x,y)
+	Z = sin( 2 * pi * X ) * sin( 2 * pi * Y )
+
+	fig = figure()
+	ax = fig.add_subplot(111, projection='3d')
+	ax.plot_surface(X,Y,Z, cmap=cm.rainbow, rstride=5, cstride=5)
+	ax.set_title(r'Initial condition $ u(x,t,0) = sin( 2 \pi x ) sin( 2 \pi y ) $', fontsize=20)
+	ax.set_xlabel('x', fontsize=18)
+	ax.set_ylabel('y', fontsize=18)
+	ax.set_zlabel('z', fontsize=18)
+	show()
+
+plot_solution = False
+if plot_solution:
+
+	dim = solution_2d.shape[0]
+
+	x = linspace(0,1, dim)
+	y = linspace(0,1, dim)
+
+	X, Y = meshgrid(x,y)
+
+	fig = figure()
+	ax = fig.add_subplot(111, projection='3d')
+	ax.plot_surface(X,Y,solution_2d, cmap=cm.rainbow, rstride=5, cstride=5)
+	ax.set_title('The diffusion equation using the Jacobi and Gauss-Seidel method', fontsize=20)
+	ax.set_xlabel('x', fontsize=18)
+	ax.set_ylabel('y', fontsize=18)
+	ax.set_zlabel('z', fontsize=18)
+	show()
+
+plot_analytical = True
+if plot_analytical:
+
+	dim = solution_2d.shape[0]
+
+	x = linspace(0,1, dim)
+	y = linspace(0,1, dim)
+
+	X, Y = meshgrid(x,y)
+
+	Z = sin(2 * pi**2 * X) * sin(2 * pi**2 * Y) * exp(-4 * pi**2 * 100)
+
+	fig = figure()
+	ax = fig.add_subplot(111, projection='3d')
+	ax.plot_surface(X,Y,Z, cmap=cm.rainbow, rstride=5, cstride=5)
+	ax.set_title('Analytical solution to the two-dimensional diffusion equation', fontsize=20)
+	ax.set_xlabel('x', fontsize=18)
+	ax.set_ylabel('y', fontsize=18)
+	ax.set_zlabel('z', fontsize=18)
+	ax.set_zlim([-1e-15, 1e-15])
+	show()
+
+	
+#exact_solution = sin( 2 * M_PI * dx * i ) * sin( 2 * M_PI * dx * j ) * exp( - 4 * M_PI * M_PI * dt * t )
+
+
+
+
+
+
+
+
+
+
+
 
 
 
