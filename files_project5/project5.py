@@ -25,7 +25,9 @@ imp_CN100000 = loadtxt('implicit_CN100000.txt')
 exp_euler10_unst = loadtxt('explicit_euler_unstable10.txt')
 exp_euler100_unst = loadtxt('explicit_euler_unstable100.txt')
 
-solution_2d = loadtxt('solution.txt')
+solution_10 = loadtxt('solution10.txt')
+solution_1000 = loadtxt('solution1000.txt')
+solution_10000 = loadtxt('solution10000.txt')
 
 n = 100
 time = linspace(0, 1, n)
@@ -186,7 +188,7 @@ if plot_analytical_solution:
 plot_initial = False
 if plot_initial:
 
-	dim = solution_2d.shape[0]
+	dim = solution_10.shape[0]
 
 	x = linspace(0,1, dim)
 	y = linspace(0,1, dim)
@@ -203,10 +205,10 @@ if plot_initial:
 	ax.set_zlabel('z', fontsize=18)
 	show()
 
-plot_solution = True
-if plot_solution:
+plot_solution5 = False
+if plot_solution5:
 
-	dim = solution_2d.shape[0]
+	dim = solution_10.shape[0]
 
 	x = linspace(0,1, dim)
 	y = linspace(0,1, dim)
@@ -215,17 +217,56 @@ if plot_solution:
 
 	fig = figure()
 	ax = fig.add_subplot(111, projection='3d')
-	ax.plot_surface(X,Y,solution_2d, cmap=cm.rainbow, rstride=5, cstride=5)
-	ax.set_title('The diffusion equation using the Jacobi and Gauss-Seidel method', fontsize=20)
+	ax.plot_surface(X,Y,solution_10, cmap=cm.rainbow, rstride=5, cstride=5)
+	ax.set_title('Numerical result of the diffusion equation for $t = 10$', fontsize=20)
 	ax.set_xlabel('x', fontsize=18)
 	ax.set_ylabel('y', fontsize=18)
 	ax.set_zlabel('z', fontsize=18)
 	show()
 
-plot_analytical = True
+
+plot_solution1000 = False
+if plot_solution1000:
+
+	dim = solution_1000.shape[0]
+
+	x = linspace(0,1, dim)
+	y = linspace(0,1, dim)
+
+	X, Y = meshgrid(x,y)
+
+	fig = figure()
+	ax = fig.add_subplot(111, projection='3d')
+	ax.plot_surface(X,Y,solution_1000, cmap=cm.rainbow, rstride=5, cstride=5)
+	ax.set_title(r'Numerical result of the diffusion equation for $t = 1000$', fontsize=20)
+	ax.set_xlabel('x', fontsize=18)
+	ax.set_ylabel('y', fontsize=18)
+	ax.set_zlabel('z', fontsize=18)
+	show()
+
+plot_solution10000 = False
+if plot_solution10000:
+
+	dim = solution_10000.shape[0]
+
+	x = linspace(0,1, dim)
+	y = linspace(0,1, dim)
+
+	X, Y = meshgrid(x,y)
+
+	fig = figure()
+	ax = fig.add_subplot(111, projection='3d')
+	ax.plot_surface(X,Y,solution_10000, cmap=cm.rainbow, rstride=5, cstride=5)
+	ax.set_title(r'Numerical result of the diffusion equation for $t = 10000$', fontsize=20)
+	ax.set_xlabel('x', fontsize=18)
+	ax.set_ylabel('y', fontsize=18)
+	ax.set_zlabel('z', fontsize=18)
+	show()
+
+plot_analytical = False
 if plot_analytical:
 
-	dim = solution_2d.shape[0]
+	dim = solution_1000.shape[0]
 
 	x = linspace(0,1, dim)
 	y = linspace(0,1, dim)
@@ -233,7 +274,7 @@ if plot_analytical:
 
 	X, Y = meshgrid(x,y)
 
-	Z = sin(2 * pi**2 * X) * sin(2 * pi**2 * Y) * exp(-4 * pi**2 * 100)
+	Z = sin(2 * pi**2 * X) * sin(2 * pi**2 * Y) * exp(-4 * pi**2 * 1000)
 
 	fig = figure()
 	ax = fig.add_subplot(111, projection='3d')

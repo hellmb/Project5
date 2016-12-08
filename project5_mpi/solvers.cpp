@@ -115,3 +115,21 @@ int GaussSeidelSolver( int n, double tolerance, double alpha, mat &A, mat &A_ini
 
     return max_iterations;
 }
+
+void WriteToFile( int n, mat &A, string timestepString ){
+    string write_file ("../files_project5/solution");
+    write_file += timestepString;
+    write_file += ".txt";
+
+    ofstream myfile;
+    myfile.open( write_file );
+
+    for ( int i = 0; i < n; i++ ){
+        for ( int j = 0; j < n; j++ ){
+
+            myfile << A(i, j) << "  ";
+        }
+
+        myfile << endl;
+    }
+}

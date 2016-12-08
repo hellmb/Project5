@@ -96,17 +96,7 @@ int main(int argc, char * argv[]){
     wtime = omp_get_wtime ( ) - wtime;
 
     // write final solution matrix to file
-    ofstream myfile;
-    myfile.open( "../files_project5/solution.txt" );
-
-    for ( int i = 0; i < n; i++ ){
-        for ( int j = 0; j < n; j++ ){
-
-            myfile << A(i, j) << "  ";
-        }
-
-        myfile << endl;
-    }
+    WriteToFile( n, A, argv[2] );
 
     cout << "Time used: " << wtime << endl;
 
@@ -120,4 +110,3 @@ int main(int argc, char * argv[]){
 
     return 0;
 }
-
