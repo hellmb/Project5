@@ -1,7 +1,7 @@
 # Project5
-This project is solved by creating algorithms for the explicit and implicit Euler scheme, as well as for the implicit Crank-Nicolson scheme. 
-These algorithms are implemented in a C++ program, which is parallelized using OpenMP. This project also includes a program written in Python, which reads data from
-output files, before plotting the results. The programs are executed as follows:
+This project solves the diffusion equation in one and two dimensions. By creating algorithms for the explicit and implicit Euler scheme, as well as for the implicit Crank-Nicolson scheme, the one-dimensional diffusion equation is solved by implementing these schemes in a C++ program. 
+The two-dimensional diffusion equation is solved using the iterative Jacobi method and the iterative Gauss-Seidel method. The code is parallelized using OpenMP. This project also includes a program written in Python, which reads data from
+output files before plotting the results. The programs are executed as follows:
 
 ## One-dimensional diffusion equation, project5 directory
 ### main.cpp
