@@ -22,6 +22,4 @@ The program takes three input arguments from the command line:
 
 ## Python file, files_project5 directory
 ### project5.py
-Before running this program, the C++ program must be executed with 10, 100, 1000, 10000 and 100000 timesteps.
-This python file reads data from the different textfiles from the C++ program, and is implemented with the -03 compiler flags. 
-Change the flags from True/False to run for the different files.
+This python file reads data from the different textfiles from the C++ program. Change the flags from True/False to run for the different files.
