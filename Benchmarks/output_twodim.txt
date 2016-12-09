@@ -1,0 +1,15 @@
+Helle$ ./project5_mp.x 100 10 1
+Time used: 0.0337009
+Jacobi error is 0.0493257 in 32 iterations
+
+Helle$ ./project5_mp.x 100 10 2
+Time used: 0.022655
+Gauss-Seidel error is 0.0493257 in 21 iterations
+
+Helle$ ./project5_mp.x 100 100 1
+Time used: 0.285524
+Jacobi error is 5.21727 in 32 iterations
+
+Helle$ ./project5_mp.x 100 100 2
+Time used: 0.214005
+Gauss-Seidel error is 5.21727 in 21 iterations

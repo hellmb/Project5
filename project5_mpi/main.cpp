@@ -14,14 +14,20 @@ int main(int argc, char * argv[]){
 
     // exit program if too few command line arguments
     if (argc < 3 ) {
-        cout << "Error: bad usage! Please set the matrix dimension and preferred number of timesteps." << endl;
+        cout << "Error: bad usage! Please see the README.md file for command line arguments." << endl;
         exit(1);
     }
 
     // define variables
     int n = atoi( argv[1] );
     int timesteps = atoi( argv[2] );
-    //double dx = 1.0/(n*n);
+
+    // Delta x variables to test stability -> change manually
+    //double dx = 1.0 / (2.0 * n);
+    //double dx = 1.0 / (4.0 * n);
+    //double dx = 2.0 / n;
+    //double dx = 3.0 / n;
+
     double dx = 1.0 / (n - 1);
     double dt = 0.25 * dx * dx;
     double alpha = dt / ( dx * dx );
@@ -47,12 +53,14 @@ int main(int argc, char * argv[]){
         }
     }
 
-
+    // start timer
     double wtime = omp_get_wtime ( );
 
     int iteration_counter;
 
     if ( atoi(argv[3]) == 1){
+
+        // iterative Jacobi method
 
         for ( int t = 1; t < timesteps; t++ ){
 
@@ -68,6 +76,8 @@ int main(int argc, char * argv[]){
     }
 
     if ( atoi(argv[3]) == 2 ){
+
+        // iterative Gauss-Seidel method
 
         for ( int t = 1; t < timesteps; t++ ){
 
@@ -93,6 +103,7 @@ int main(int argc, char * argv[]){
         }
     }
 
+    // end timer
     wtime = omp_get_wtime ( ) - wtime;
 
     // write final solution matrix to file

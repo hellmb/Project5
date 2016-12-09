@@ -45,8 +45,7 @@ int JacobiSolver( int n, double tolerance, double alpha, mat &A, mat &A_init ){
             for ( int i = 0; i < n; i ++ ){
                 for ( int j = 0; j < n; j++ ){
                     // change this the other way
-                    sum += ( A_old(i, j) - A(i, j) ) * ( A_old(i, j) - A(i, j) );
-                    //sum += ( A(i, j) - A_old(i, j) ) * ( A(i, j) - A_old(i, j) );
+                    sum += ( A(i, j) - A_old(i, j) ) * ( A(i, j) - A_old(i, j) );
                     A_old(i, j) = A(i, j);
                 }
             }
@@ -98,8 +97,7 @@ int GaussSeidelSolver( int n, double tolerance, double alpha, mat &A, mat &A_ini
 # pragma omp for
             for ( int i = 0; i < n; i ++ ){
                 for ( int j = 0; j < n; j++ ){
-                    sum += ( A_old(i, j) - A(i, j) ) * ( A_old(i, j) - A(i, j) );
-                    //sum += ( A(i, j) - A_old(i, j) ) * ( A(i, j) - A_old(i, j) );
+                    sum += ( A(i, j) - A_old(i, j) ) * ( A(i, j) - A_old(i, j) );
                     A_old(i, j) = A(i, j);
                 }
             }

@@ -1,8 +1,3 @@
-/*
- Input arguments:
- - argv[1]: number of timesteps
- - argv[2]: 1, 2, 3 or 4 -> deciding which scheme to solve
-*/
 #include <iostream>
 #include <cmath>
 #include <armadillo>
@@ -17,12 +12,11 @@ int main ( int argc, char* argv[] ){
 
     // exit program if too few command line arguments
     if (argc < 2 ) {
-        cout << "Error: bad usage! Please see the README.mp file for command line arguments.";
+        cout << "Error: bad usage! Please see the README.md file for command line arguments.";
         exit(1);
     }
 
     // define variables
-
     int n = 100;
     int timesteps = atoi(argv[1]);
 
@@ -80,7 +74,6 @@ int main ( int argc, char* argv[] ){
 
             }
 
-            // implicit scheme
             TridiagonalSolver( a, b, c, n, V_new, V_old );
 
         }
@@ -101,7 +94,6 @@ int main ( int argc, char* argv[] ){
     if ( atoi(argv[2]) == 4 ){
 
         // explicit Euler scheme for unstable solutions
-
         explicitForwardEulerUnstable( n, timesteps, V_old, V_new, argv[1] );
     }
 
