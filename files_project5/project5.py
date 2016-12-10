@@ -8,19 +8,16 @@ exp_euler10 = loadtxt('explicit_euler10.txt')
 exp_euler100 = loadtxt('explicit_euler100.txt')
 exp_euler1000 = loadtxt('explicit_euler1000.txt')
 exp_euler10000 = loadtxt('explicit_euler10000.txt')
-exp_euler100000 = loadtxt('explicit_euler100000.txt')
 
 imp_euler10 = loadtxt('implicit_euler10.txt')
 imp_euler100 = loadtxt('implicit_euler100.txt')
 imp_euler1000 = loadtxt('implicit_euler1000.txt')
 imp_euler10000 = loadtxt('implicit_euler10000.txt')
-imp_euler100000 = loadtxt('implicit_euler100000.txt')
 
 imp_CN10 = loadtxt('implicit_CN10.txt')
 imp_CN100 = loadtxt('implicit_CN100.txt')
 imp_CN1000 = loadtxt('implicit_CN1000.txt')
 imp_CN10000 = loadtxt('implicit_CN10000.txt')
-imp_CN100000 = loadtxt('implicit_CN100000.txt')
 
 exp_euler10_unst = loadtxt('explicit_euler_unstable10.txt')
 exp_euler100_unst = loadtxt('explicit_euler_unstable100.txt')
@@ -46,7 +43,6 @@ if explicit_euler:
 	plot(time, exp_euler100, label=r'Timestep $= 100$')
 	plot(time, exp_euler1000, label=r'Timestep $= 1000$')
 	plot(time, exp_euler10000, label=r'Timestep $= 10000$')
-	plot(time, exp_euler100000, label=r'Timestep $= 100000$')
 	title(r'Explicit Euler scheme over different timesteps', fontsize=20)
 	xlabel(r'$Time$', fontsize=18)
 	ylabel(r'$u(x, t)$', fontsize=18)
@@ -82,7 +78,6 @@ if implicit_euler:
 	plot(time, imp_euler100, label=r'Timestep $= 100$')
 	plot(time, imp_euler1000, label=r'Timestep $= 1000$')
 	plot(time, imp_euler10000, label=r'Timestep $= 10000$')
-	plot(time, imp_euler100000, label=r'Timestep $= 100000$')
 	title(r'Implicit Euler scheme over different timesteps', fontsize=20)
 	xlabel(r'$Time$', fontsize=18)
 	ylabel(r'$u(x,t)$', fontsize=18)
@@ -97,7 +92,6 @@ if implicit_CN:
 	plot(time, imp_CN100, label=r'Timestep $= 100$')
 	plot(time, imp_CN1000, label=r'Timestep $= 1000$')
 	plot(time, imp_CN10000, label=r'Timestep $= 10000$')
-	plot(time, imp_CN100000, label=r'Timestep $= 100000$')
 	title(r'Implicit Crank-Nicolson scheme over different timesteps', fontsize=20)
 	xlabel(r'$Time$', fontsize=18)
 	ylabel(r'$u(x, t)$', fontsize=18)
@@ -123,11 +117,11 @@ if plot_analytical_solution:
 
 	subplot(122)
 	plot(time, analytical_solution, 'm', label=r'Analytical solution')
-	plot(time, exp_euler100000, 'r', label=r'Explicit Euler')
-	plot(time, imp_euler100000, 'b', label=r'Implicit Euler')
-	plot(time, imp_CN100000, 'g', label=r'Implicit Crank-Nicolson')
+	plot(time, exp_euler10000, 'r', label=r'Explicit Euler')
+	plot(time, imp_euler10000, 'b', label=r'Implicit Euler')
+	plot(time, imp_CN10000, 'g', label=r'Implicit Crank-Nicolson')
 
-	title(r'Compare analytical solution to all three schemes at $t_2 = 100000$', fontsize=20)
+	title(r'Compare analytical solution to all three schemes at $t_2 = 10000$', fontsize=20)
 	xlabel(r'$Time$', fontsize=18)
 	ylabel(r'$u(x, t)$', fontsize=18)
 	legend(loc='best', fontsize=15)
@@ -135,10 +129,10 @@ if plot_analytical_solution:
 
 	# subplot inside figure
 	inset_axes = inset_axes(ax, width='30%', height=1.0, loc=5)
-	plot(time, analytical_solution)
-	plot(time, exp_euler10000)
-	plot(time, imp_euler10000)
-	plot(time, imp_CN10000)
+	plot(time, analytical_solution, 'm')
+	plot(time, exp_euler10000, 'r')
+	plot(time, imp_euler10000, 'b')
+	plot(time, imp_CN10000, 'g')
 	ylim([0.5,0.51])
 	xlim([0.5,0.51])
 
@@ -274,7 +268,7 @@ if plot_analytical:
 
 	X, Y = meshgrid(x,y)
 
-	Z = sin(2 * pi**2 * X) * sin(2 * pi**2 * Y) * exp(-4 * pi**2 * 1000)
+	Z = sin(2 * pi * X) * sin(2 * pi * Y) * exp(-4 * pi**2 * 1000)
 
 	fig = figure()
 	ax = fig.add_subplot(111, projection='3d')
