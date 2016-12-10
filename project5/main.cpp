@@ -22,10 +22,7 @@ int main ( int argc, char* argv[] ){
 
     double delta_x = 0.1;
     double delta_t = ( delta_x * delta_x ) / 2.0;
-
-    // different alpha value for Euler and Crank-Nicolson schemes
     double alpha = delta_t / (delta_x * delta_x);
-    double alpha_CN = delta_t / (2.0 * delta_x * delta_x);
 
 
     vec V_old(n);
@@ -62,15 +59,15 @@ int main ( int argc, char* argv[] ){
 
         // implicit Crank-Nicolson scheme
 
-        double a = - alpha_CN;
-        double c = - alpha_CN;
-        double b = 2.0 + 2.0 * alpha_CN;
+        double a = - alpha;
+        double c = - alpha;
+        double b = 2.0 + 2.0 * alpha;
 
         for ( int t = 1; t <= timesteps; t++ ){
 
             for ( int i = 1; i < n-1; i++ ){
                 // explicit scheme
-                V_old(i) = alpha_CN * V_new(i-1) + (2 - 2 * alpha_CN) * V_new(i) + alpha_CN * V_new(i+1);
+                V_old(i) = alpha * V_new(i-1) + (2 - 2 * alpha) * V_new(i) + alpha * V_new(i+1);
 
             }
 

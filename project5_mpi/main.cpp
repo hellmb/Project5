@@ -23,10 +23,10 @@ int main(int argc, char * argv[]){
     int timesteps = atoi( argv[2] );
 
     // Delta x variables to test stability -> change manually
-    //double dx = 1.0 / (2.0 * n);
-    //double dx = 1.0 / (4.0 * n);
-    //double dx = 2.0 / n;
-    //double dx = 3.0 / n;
+    //double dx = 1.0;
+    //double dx = 0.1;
+    //double dx = 0.01;
+    //double dx = 0.001;
 
     double dx = 1.0 / (n - 1);
     double dt = 0.25 * dx * dx;
